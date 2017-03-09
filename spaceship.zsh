@@ -91,13 +91,14 @@ spaceship_time() {
 # Username.
 # If user is root, then pain it in red. Otherwise, just print in yellow.
 spaceship_user() {
+  echo -n "%{$FX[bold]%}"
   if [[ $USER == 'root' ]]; then
-    echo -n "%{$fg_bold[red]%}"
+    echo -n "%{$fg[red]%}"
   else
-    echo -n "%{$fg_bold[yellow]%}"
+    echo -n "%{$FG[028]%}"
   fi
   echo -n "%n"
-  echo -n "%{$reset_color%}"
+  echo -n "%{$reset_color%}%{$FX[reset]%}"
 }
 
 # Username and SSH host
@@ -110,7 +111,7 @@ spaceship_host() {
     # Do not show directory prefix if prefixes are disabled
     [[ $SPACESHIP_PREFIX_SHOW == true ]] && echo -n "%B${SPACESHIP_PREFIX_DIR}%b" || echo -n ' '
     # Display machine name
-    echo -n "%{$fg_bold[green]%}%m%{$reset_color%}"
+    echo -n "%{$FX[bold]%}%{$FG[172]%}%m%{$reset_color%}%{$FX[reset]%}"
     # Do not show host prefix if prefixes are disabled
     [[ $SPACESHIP_PREFIX_SHOW == true ]] && echo -n "%B${SPACESHIP_PREFIX_HOST}%b" || echo -n ' '
 
@@ -127,9 +128,11 @@ spaceship_host() {
 # Current directory.
 # Return only three last items of path
 spaceship_current_dir() {
-  echo -n "%{$fg_bold[cyan]%}"
+  echo -n "%{$FX[bold]%}"
+  echo -n "%{$FG[091]%}"
   echo -n "%${SPACESHIP_PROMPT_TRUNC}~";
   echo -n "%{$reset_color%}"
+  echo -n "%{$FX[reset]%}"
 }
 
 # Uncommitted changes.
@@ -203,7 +206,8 @@ spaceship_git_status() {
 
     indicators+="$(spaceship_git_uncomitted)"
     indicators+="$(spaceship_git_unstaged)"
-    indicators+="$(spaceship_git_untracked)"
+    # Because of .cproject and .project eclipse files and others, we do not want untracked files
+    #indicators+="$(spaceship_git_untracked)"
     indicators+="$(spaceship_git_stashed)"
     indicators+="$(spaceship_git_unpushed_unpulled)"
 
@@ -212,12 +216,15 @@ spaceship_git_status() {
     # Do not show git prefix if prefixes are disabled
     [[ $SPACESHIP_PREFIX_SHOW == true ]] && echo -n "%B${SPACESHIP_PREFIX_GIT}%b" || echo -n ' '
 
-    echo -n "%{$fg_bold[magenta]%}"
+    echo -n "%{$FX[bold]%}"
+    echo -n "%{$FG[033]%}"
     echo -n "$(git_current_branch)"
     echo -n "%{$reset_color%}"
-    echo -n "%{$fg_bold[red]%}"
+    echo -n "%{$FX[bold]%}"
+    echo -n "%{$FG[124]%}"
     echo -n "$indicators"
     echo -n "%{$reset_color%}"
+    echo -n "%{$FX[reset]%}"
   fi
 }
 
@@ -430,7 +437,7 @@ spaceship_vi_mode_disable() {
 # Paint $PROMPT_SYMBOL in red if previous command was fail and
 # paint in green if everything was OK.
 spaceship_return_status() {
-  echo -n "%(?.%{$fg[green]%}.%{$fg[red]%})"
+  echo -n "%(?.%{$fg[black]%}.%{$FG[160]%})"
   echo -n "%B${SPACESHIP_PROMPT_SYMBOL}%b "
   echo -n "%{$reset_color%}"
 }
@@ -473,9 +480,11 @@ spaceship_prompt() {
 
 # PS2 - continuation interactive prompt
 spaceship_ps2_prompt() {
-  echo -n "%{$fg_bold[yellow]%}"
-  echo -n "%{$SPACESHIP_PROMPT_SYMBOL%} "
+  echo -n "%{$FX[bold]%}"
+  echo -n "%{$FG[022]%}"
+  echo -n "%{$SPACESHIP_PROMPT_SYMBOL%}"
   echo -n "%{$reset_color%}"
+  echo -n "%{$FX[reset]%}"
 }
 
 # Disable python virtualenv environment prompt prefix
